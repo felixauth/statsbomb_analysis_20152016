@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Arc
 import numpy as np
 
-def createPitch(field_dimen = (110,73), field_color ='green', linewidth=2, markersize=20):
+def createPitch(field_dimen = (110,80), field_color ='green', linewidth=2, markersize=20):
     """ plot_pitch
     
     Plots a soccer pitch. All distance units converted to meters.
@@ -91,3 +91,24 @@ def createPitch(field_dimen = (110,73), field_color ='green', linewidth=2, marke
     ax.set_ylim([-ymax,ymax])
     ax.set_axisbelow(True)
     return fig,ax
+
+def calculate_adj_position(position: list, field_dimen: list) -> list[float, float]:
+    """ 
+    
+    Calculate the position on a zero-centered axis as the pitch center is (0,0)
+    
+    Parameters
+    -----------
+        position: position from Statsbomb data
+        field_dimen: (length, width) of field in meters. Default is (106,68)
+        
+    Returns
+    -----------
+       position adjusted, centered around 0
+
+    """
+    
+    x_adjust = position[0] - field_dimen[0] / 2
+    y_adjust = position[1] - field_dimen[1] / 2
+    
+    return [x_adjust, y_adjust]
