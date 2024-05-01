@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from matplotlib.patches import Arc
+from matplotlib import patches
 import numpy as np
 
 def createPitch(field_dimen = (110,80), field_color ='green', linewidth=2, markersize=20):
@@ -112,3 +112,83 @@ def calculate_adj_position(position: list, field_dimen: list) -> list[float, flo
     y_adjust = position[1] - field_dimen[1] / 2
     
     return [x_adjust, y_adjust]
+
+def sb_pitch(pitch_dim: tuple = (120, 80)):
+    """
+    See Statsbomb pitch dimension on page 23 of the PDF events documentation
+    """
+
+    # Storing pitch length and width
+    pitch_length = pitch_dim[0]
+    pitch_width = pitch_dim[1]
+
+    # Creating plot
+    fig, ax = plt.subplots(figsize=(12,8))
+    
+    # Plotting the soccer pitch
+    ax.set_xlim(-10, pitch_length + 10)
+    ax.set_ylim(-10, pitch_width + 10)
+
+    # Inverting axis as per Sb documentation
+    plt.gca().invert_yaxis()
+    
+    # Plotting the pitch boundaries
+    ax.plot([0, 0], [0, pitch_width], color='black')  # left goal-line
+    ax.plot([pitch_length, pitch_length], [0, pitch_width], color='black')  # right goal-line
+    ax.plot([0, pitch_length], [0, 0], color='black')  # top boundary
+    ax.plot([0, pitch_length], [pitch_width, pitch_width], color='black')  # bottom boundary
+
+    # Plotting penalty areas
+    ax.plot([0, 18], [18, 18], color='black')  # left penalty area horizontal line
+    ax.plot([0, 18], [62, 62], color='black')  # left penalty area horizontal line
+    ax.plot([102, 120], [18, 18], color='black')  # right penalty area horizontal line
+    ax.plot([102, 120], [62, 62], color='black')  # right penalty area horizontal line
+    ax.plot([18, 18], [18, 62], color='black')  # left penalty area vertical line
+    ax.plot([102, 102], [18, 62], color='black')  # right penalty area vertical line
+    ax.plot([0, 6], [30, 30], color='black')  # left small penalty area horizontal line
+    ax.plot([0, 6], [50, 50], color='black')  # left small penalty area horizontal line
+    ax.plot([114, 120], [30, 30], color='black')  # right small penalty area horizontal line
+    ax.plot([114, 120], [50, 50], color='black')  # right small penalty area horizontal line
+    ax.plot([6, 6], [30, 50], color='black')  # left small penalty area vertical line
+    ax.plot([114, 114], [30, 50], color='black')  # right small penalty area vertical line
+    
+    # Plotting goals post
+    ax.plot([0, -4], [36, 36], color='black') # left
+    ax.plot([0, -4], [44, 44], color='black') # left
+    ax.plot([-4, -4], [36, 44], color='black') # left
+    ax.plot([120, 124], [36, 36], color='black') # right
+    ax.plot([120, 124], [44, 44], color='black') # right
+    ax.plot([124, 124], [36, 44], color='black') # right
+    
+    # Plotting center circle
+    center_circle = patches.Circle((60, 40), 10, edgecolor='black', facecolor='none')
+    ax.add_patch(center_circle)
+
+    # Plotting arc
+    arc_left = patches.Arc((13, 40), height=16.2, width=16.2, angle=0,
+                    theta1=310, theta2=50, color="black")
+    ax.add_patch(arc_left)
+    arc_right = patches.Arc((107, 40), height=16.2, width=16.2, angle=0,
+                    theta1=130, theta2=230, color="black")
+    ax.add_patch(arc_right)
+
+    # Plotting penalty spots
+    ax.plot(12, 40, 'ko', markersize=2)  # left penalty spot
+    ax.plot(108, 40, 'ko', markersize=2)  # right penalty spot
+
+    # Plotting center spot
+    ax.plot(60, 40, 'ko', markersize=2)  # center spot
+
+    # Adding half-way line
+    ax.plot([60, 60], [0, 80], color='black')
+
+    # Set aspect to equal, so the pitch is not distorted
+    ax.set_aspect('equal', adjustable='box')
+
+    # Remove axis
+    plt.axis('off')
+    
+    # # Show plot
+    # plt.show()
+    
+    return fig, ax
