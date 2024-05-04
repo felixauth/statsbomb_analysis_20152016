@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib import patches
 import numpy as np
+from matplotlib.figure import Figure
 
 def createPitch(field_dimen = (110,80), field_color ='green', linewidth=2, markersize=20):
     """ plot_pitch
@@ -19,7 +20,8 @@ def createPitch(field_dimen = (110,80), field_color ='green', linewidth=2, marke
        fig,ax : figure and aixs objects (so that other data can be plotted onto the pitch)
 
     """
-    fig,ax = plt.subplots(figsize=(12,8)) # create a figure 
+     
+    fig,ax = plt.subplots() # create a figure 
     # decide what color we want the field to be. Default is green, but can also choose white
     if field_color=='green':
         ax.set_facecolor('mediumseagreen')
@@ -123,7 +125,9 @@ def sb_pitch(pitch_dim: tuple = (120, 80)):
     pitch_width = pitch_dim[1]
 
     # Creating plot
-    fig, ax = plt.subplots(figsize=(12,8))
+    figure = Figure(figsize=(12, 8))
+    ax = figure.subplots(1,1)   
+    # fig, ax = plt.subplots(figsize=(12,8))
     
     # Plotting the soccer pitch
     ax.set_xlim(-10, pitch_length + 10)
@@ -191,4 +195,4 @@ def sb_pitch(pitch_dim: tuple = (120, 80)):
     # # Show plot
     # plt.show()
     
-    return fig, ax
+    return figure, ax
